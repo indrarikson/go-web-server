@@ -26,7 +26,7 @@
 
 ## About
 
-A minimal, perfect, reusable template for modern web and API development using the **Modern Go Stack** - a cohesive technology stack for building high-performance, maintainable applications with radical simplicity and stability. Creates single, self-contained binaries with no external dependencies.
+A minimal, clean, reusable template for modern web and API development using the **Modern Go Stack** - a cohesive technology stack for building high-performance, maintainable applications with radical simplicity and stability. Creates single, self-contained binaries with no external dependencies.
 
 **Key Features:**
 
@@ -55,6 +55,10 @@ A minimal, perfect, reusable template for modern web and API development using t
 | **Config**    | Standard Library                                            | Environment-based configuration         |
 | **Build**     | [go generate](https://golang.org/pkg/go/)                   | Go native code generation               |
 
+<p align="center">
+  <img src="docs/images/gopher-mage.svg" alt="Gopher Mage" width="200" />
+</p>
+
 ## Quick Start
 
 ```bash
@@ -69,10 +73,6 @@ mage run
 
 # Server starts at http://localhost:8080
 ```
-
-<p align="center">
-  <img src="docs/images/gopher-mage.svg" alt="Gopher Mage" width="200" />
-</p>
 
 ## Mage Commands
 
@@ -146,32 +146,6 @@ The binary includes embedded static assets, templates, and SQLite database for e
 - `DATABASE_URL`: SQLite database file (default: data.db)
 - `ENVIRONMENT`: Environment mode (default: development)
 - `LOG_LEVEL`: Logging level (default: info)
-
-### Systemd Service
-
-```ini
-[Unit]
-Description=Go Web Server
-After=network.target
-
-[Service]
-Type=simple
-User=www-data
-ExecStart=/usr/local/bin/server
-Restart=always
-RestartSec=5
-
-[Install]
-WantedBy=multi-user.target
-```
-
-### Reverse Proxy (Caddy)
-
-```sh
-yourdomain.com {
-    reverse_proxy localhost:8080
-}
-```
 
 ## Key Features Demonstrated
 
