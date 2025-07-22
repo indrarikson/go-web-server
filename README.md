@@ -63,8 +63,8 @@ cd go-web-server
 go mod tidy
 
 # Install dependencies and run
-make deps
-make run
+mage setup
+mage run
 
 # Server starts at http://localhost:8080
 ```
@@ -79,38 +79,26 @@ make run
 
 ```bash
 mage setup            # Install tools and dependencies
-mage generate:all     # Generate sqlc and templ code
-mage dev:server       # Start web development server
-mage dev:tui          # Start TUI development tool
+mage generate         # Generate sqlc and templ code
+mage dev              # Start development server with hot reload
+mage run              # Build and run server
 ```
 
 **Build & Test:**
 
 ```bash
-mage build:all        # Build all applications
-mage build:webapp     # Build web application only
-mage build:tui        # Build TUI tool only
-mage test:all         # Run all tests
-mage test:webapp      # Run web application tests
-mage test:tui         # Run TUI tool tests
-```
-
-**Database:**
-
-```bash
-mage database:up      # Run database migrations
-mage database:down    # Rollback latest migration
-mage database:reset   # Reset database (drop & recreate)
+mage build            # Build server binary (default target)
+mage test             # Run all tests
+mage clean            # Clean build artifacts
 ```
 
 **Quality & Production:**
 
 ```bash
-mage quality:all      # Run all quality checks
-mage quality:fmt      # Format Go code
-mage quality:vet      # Run go vet
-mage quality:vulncheck # Check for vulnerabilities
-mage clean            # Clean build artifacts
+mage fmt              # Format and tidy Go code
+mage vet              # Run go vet
+mage vulnCheck        # Check for vulnerabilities
+mage lint             # Run all linters (vet + vulnCheck)
 mage ci               # Full CI pipeline
 ```
 
@@ -120,24 +108,6 @@ mage ci               # Full CI pipeline
 
 Interactive web application showcasing Echo + Templ + HTMX + Pico.css + SQLC integration with user management, CRUD operations, and real-time updates.
 
-## Development Commands
-
-```bash
-# Development
-make run                # Build and run server
-make dev                # Run with hot reload (requires air)
-make test               # Run tests
-make lint               # Run linting and security checks
-
-# Build & Deploy
-make build              # Build production binary
-make clean              # Remove build artifacts
-make deps               # Install development tools
-
-# Code Generation
-make generate           # Generate templ + sqlc code
-make help               # Show all available commands
-```
 
 ## Project Structure
 
@@ -154,7 +124,7 @@ go-web-server/
 │       ├── static/       # Pico.css & HTMX
 │       └── embed.go      # Go embed directive
 ├── bin/                  # Compiled binaries
-├── Makefile             # Build automation
+├── magefile.go          # Mage build automation
 └── sqlc.yaml            # SQLC configuration
 ```
 
@@ -163,7 +133,7 @@ go-web-server/
 ### Single Binary
 
 ```bash
-make build  # Creates optimized binary in bin/server
+mage build  # Creates optimized binary in bin/server
 ```
 
 The binary includes embedded Pico.css, HTMX, Templ templates, and SQLite database. **Zero external dependencies**, ~10-15MB size, instant startup.
