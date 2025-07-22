@@ -32,18 +32,6 @@ jobs:
     - name: Verify Go modules
       run: go mod verify
 
-    - name: Generate code
-      run: mage generate:all
-
-    - name: Run quality checks
-      run: mage quality:all
-
-    - name: Run tests
-      run: mage test:all
-
-    - name: Build applications
-      run: mage build:all
-
     - name: Run complete CI pipeline
       run: mage ci
 
