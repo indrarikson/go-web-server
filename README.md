@@ -4,7 +4,7 @@
 
 <p align="center">
   <a href="https://github.com/dunamismax/go-web-server">
-    <img src="https://readme-typing-svg.demolab.com/?font=Fira+Code&size=24&pause=1000&color=00ADD8&center=true&vCenter=true&width=900&lines=🚀+Modern+Go+Web+Server+Template;⚡+Radical+Simplicity+%26+Performance;🛠️+Echo+%2B+Templ+%2B+HTMX+%2B+Pico.css;💾+SQLC+%2B+SQLite+%2B+Structured+Logging;📦+Single+Binary+Deployment;🎯+Production+Ready+Template;🔥+Zero+External+Dependencies" alt="Typing SVG" />
+    <img src="https://readme-typing-svg.demolab.com/?font=Fira+Code&size=24&pause=1000&color=00ADD8&center=true&vCenter=true&width=900&lines=Modern+Go+Web+Server+Template;Radical+Simplicity+%26+Performance;Echo+%2B+Templ+%2B+HTMX+%2B+Pico.css;SQLC+%2B+SQLite+%2B+Structured+Logging;Single+Binary+Deployment;Production+Ready+Template;Zero+External+Dependencies" alt="Typing SVG" />
   </a>
 </p>
 
