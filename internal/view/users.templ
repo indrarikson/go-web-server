@@ -1,81 +1,286 @@
 package view
 
 import (
-	"fmt"
+	"database/sql"
+	"strconv"
+	"time"
 	"github.com/dunamismax/go-web-server/internal/view/layout"
 	"github.com/dunamismax/go-web-server/internal/store"
 )
 
-templ Users(users []store.User) {
+templ Users() {
 	@layout.Base("Users") {
 		<section>
 			<hgroup>
-				<h1>Users</h1>
-				<p>Manage user accounts</p>
+				<h1>👥 User Management</h1>
+				<p>Manage users with real-time updates powered by HTMX</p>
 			</hgroup>
-		</section>
-		
-		<section>
-			<h2>Add New User</h2>
-			<form hx-post="/users" hx-target="#user-list" hx-swap="innerHTML">
-				<div class="grid">
-					<input type="text" name="name" placeholder="Full Name" required/>
-					<input type="email" name="email" placeholder="Email Address" required/>
-					<button type="submit">Add User</button>
+			<div class="grid">
+				<div>
+					<p>
+						<strong>Users:</strong> <span id="user-count" hx-get="/api/users/count" hx-trigger="load, userCreated from:body, userDeleted from:body">-</span>
+					</p>
 				</div>
-			</form>
-		</section>
-		
-		<section>
-			<h2>Current Users</h2>
-			<div id="user-list">
-				@UserList(users)
+				<div style="text-align: right;">
+					<button 
+						hx-get="/users/form" 
+						hx-target="#user-form-modal" 
+						hx-swap="innerHTML"
+						class="contrast">
+						➕ Add New User
+					</button>
+				</div>
 			</div>
 		</section>
+		
+		<section>
+			<div 
+				hx-get="/users/list" 
+				hx-trigger="load, userCreated from:body, userDeleted from:body" 
+				hx-swap="innerHTML" 
+				id="user-list-container">
+				<article aria-busy="true">
+					<header><h4>Loading users...</h4></header>
+				</article>
+			</div>
+		</section>
+		
+		<div id="user-form-modal"></div>
 	}
 }
 
 templ UserList(users []store.User) {
 	if len(users) == 0 {
-		<p><em>No users found. Add some users above!</em></p>
+		<article>
+			<header>
+				<h3>📝 No Users Yet</h3>
+			</header>
+			<p>Get started by adding your first user. Click the "Add New User" button above.</p>
+		</article>
 	} else {
-		<table>
-			<thead>
-				<tr>
-					<th>ID</th>
-					<th>Name</th>
-					<th>Email</th>
-					<th>Created</th>
-					<th>Actions</th>
-				</tr>
-			</thead>
-			<tbody>
-				for _, user := range users {
+		<div class="overflow-auto">
+			<table>
+				<thead>
 					<tr>
-						<td>{ fmt.Sprintf("%d", user.ID) }</td>
-						<td>{ user.Name }</td>
-						<td>{ user.Email }</td>
-						<td>
-							if user.CreatedAt.Valid {
-								{ user.CreatedAt.Time.Format("2006-01-02 15:04") }
-							} else {
-								{ "N/A" }
-							}
-						</td>
-						<td>
-							<button 
-								class="secondary" 
-								hx-delete={ "/users/" + fmt.Sprintf("%d", user.ID) }
-								hx-target="#user-list" 
-								hx-swap="innerHTML"
-								hx-confirm="Delete this user?"
-							>
-								Delete
-							</button>
-						</td>
+						<th>User</th>
+						<th>Contact</th>
+						<th>Bio</th>
+						<th>Status</th>
+						<th>Created</th>
+						<th>Actions</th>
 					</tr>
-				}
-			</tbody>
-		</table>
+				</thead>
+				<tbody>
+					for _, user := range users {
+						@UserRow(user)
+					}
+				</tbody>
+			</table>
+		</div>
 	}
 }
+
+templ UserRow(user store.User) {
+	<tr id={ "user-" + strconv.FormatInt(user.ID, 10) }>
+		<td>
+			<div style="display: flex; align-items: center; gap: 0.5rem;">
+				if user.AvatarUrl.Valid && user.AvatarUrl.String != "" {
+					<img src={ user.AvatarUrl.String } alt={ user.Name } class="avatar"/>
+				} else {
+					<div class="avatar" style="background: var(--pico-primary-background); display: flex; align-items: center; justify-content: center; color: var(--pico-primary);">
+						{ string([]rune(user.Name)[0]) }
+					</div>
+				}
+				<strong>{ user.Name }</strong>
+			</div>
+		</td>
+		<td>
+			<a href={ templ.SafeURL("mailto:" + user.Email) }>{ user.Email }</a>
+		</td>
+		<td>
+			if user.Bio.Valid && user.Bio.String != "" {
+				<small>{ user.Bio.String }</small>
+			} else {
+				<small style="color: var(--pico-muted-color);">No bio provided</small>
+			}
+		</td>
+		<td>
+			if user.IsActive.Valid && user.IsActive.Bool {
+				<span style="color: var(--pico-color-green-500);">● Active</span>
+			} else {
+				<span style="color: var(--pico-color-amber-500);">● Inactive</span>
+			}
+		</td>
+		<td>
+			<small>{ formatTimeFromNullTime(user.CreatedAt) }</small>
+		</td>
+		<td>
+			<div role="group">
+				<button 
+					hx-get={ "/users/" + strconv.FormatInt(user.ID, 10) + "/edit" }
+					hx-target="#user-form-modal" 
+					hx-swap="innerHTML"
+					class="outline secondary"
+					style="padding: 0.25rem 0.5rem;">
+					✏️
+				</button>
+				if user.IsActive.Valid && user.IsActive.Bool {
+					<button 
+						hx-patch={ "/users/" + strconv.FormatInt(user.ID, 10) + "/deactivate" }
+						hx-target={ "#user-" + strconv.FormatInt(user.ID, 10) }
+						hx-swap="outerHTML"
+						hx-confirm="Deactivate this user?"
+						class="outline"
+						style="padding: 0.25rem 0.5rem;">
+						🔒
+					</button>
+				}
+				<button 
+					hx-delete={ "/users/" + strconv.FormatInt(user.ID, 10) }
+					hx-target={ "#user-" + strconv.FormatInt(user.ID, 10) }
+					hx-swap="outerHTML"
+					hx-confirm="Are you sure you want to permanently delete this user?"
+					class="outline"
+					style="padding: 0.25rem 0.5rem; color: var(--pico-color-red-500);">
+					🗑️
+				</button>
+			</div>
+		</td>
+	</tr>
+}
+
+templ UserForm(user *store.User) {
+	<article>
+		<header>
+			<h3>{ getFormTitle(user) }</h3>
+			<button 
+				aria-label="Close"
+				rel="prev"
+				onclick="document.getElementById('user-form-modal').innerHTML = ''">
+			</button>
+		</header>
+		
+		<form 
+			if user != nil {
+				hx-put={ "/users/" + strconv.FormatInt(user.ID, 10) }
+			} else {
+				hx-post="/users"
+			}
+			hx-target="#user-list-container" 
+			hx-swap="innerHTML"
+			hx-on::after-request="if(event.detail.successful) document.getElementById('user-form-modal').innerHTML = ''">
+			
+			<div class="grid">
+				<label for="name">
+					Name *
+					<input 
+						type="text" 
+						id="name" 
+						name="name" 
+						value={ getUserName(user) }
+						required 
+						placeholder="Enter full name"/>
+				</label>
+				<label for="email">
+					Email *
+					<input 
+						type="email" 
+						id="email" 
+						name="email" 
+						value={ getUserEmail(user) }
+						required 
+						placeholder="user@example.com"/>
+				</label>
+			</div>
+			
+			<label for="bio">
+				Bio
+				<textarea 
+					id="bio" 
+					name="bio" 
+					placeholder="Tell us about yourself..."
+					rows="3">{ getUserBio(user) }</textarea>
+			</label>
+			
+			<label for="avatar_url">
+				Avatar URL
+				<input 
+					type="url" 
+					id="avatar_url" 
+					name="avatar_url" 
+					value={ getUserAvatarUrl(user) }
+					placeholder="https://example.com/avatar.jpg"/>
+				<small>Provide a URL to an image for the user's avatar</small>
+			</label>
+			
+			<footer>
+				<div role="group">
+					<button 
+						type="button"
+						class="secondary"
+						onclick="document.getElementById('user-form-modal').innerHTML = ''">
+						Cancel
+					</button>
+					<button type="submit">
+						<span>{ getSubmitButtonText(user) }</span>
+						<span class="htmx-indicator" aria-hidden="true">⏳</span>
+					</button>
+				</div>
+			</footer>
+		</form>
+	</article>
+}
+
+templ UserCount(count int64) {
+	{ strconv.FormatInt(count, 10) }
+}
+
+func formatTimeFromNullTime(nullTime sql.NullTime) string {
+	if nullTime.Valid {
+		return nullTime.Time.Format("Jan 2, 2006")
+	}
+	return "N/A"
+}
+
+func getUserName(user *store.User) string {
+	if user != nil {
+		return user.Name
+	}
+	return ""
+}
+
+func getUserEmail(user *store.User) string {
+	if user != nil {
+		return user.Email
+	}
+	return ""
+}
+
+func getUserBio(user *store.User) string {
+	if user != nil && user.Bio.Valid {
+		return user.Bio.String
+	}
+	return ""
+}
+
+func getUserAvatarUrl(user *store.User) string {
+	if user != nil && user.AvatarUrl.Valid {
+		return user.AvatarUrl.String
+	}
+	return ""
+}
+
+func getFormTitle(user *store.User) string {
+	if user != nil {
+		return "✏️ Edit User"
+	}
+	return "➕ Add New User"
+}
+
+func getSubmitButtonText(user *store.User) string {
+	if user != nil {
+		return "💾 Update User"
+	}
+	return "➕ Create User"
+}
+

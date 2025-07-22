@@ -4,7 +4,7 @@
 
 <p align="center">
   <a href="https://github.com/dunamismax/go-web-server">
-    <img src="https://readme-typing-svg.demolab.com/?font=Fira+Code&size=24&pause=1000&color=00ADD8&center=true&vCenter=true&width=800&lines=Modern+Go+Web+Server+Template;Radical+Simplicity+%26+Performance;Echo+%2B+Templ+%2B+HTMX+%2B+Pico.css;SQLC+%2B+SQLite+%2B+slog;Single+Binary+Deployment" alt="Typing SVG" />
+    <img src="https://readme-typing-svg.demolab.com/?font=Fira+Code&size=24&pause=1000&color=00ADD8&center=true&vCenter=true&width=900&lines=🚀+Modern+Go+Web+Server+Template;⚡+Radical+Simplicity+%26+Performance;🛠️+Echo+%2B+Templ+%2B+HTMX+%2B+Pico.css;💾+SQLC+%2B+SQLite+%2B+Structured+Logging;📦+Single+Binary+Deployment;🎯+Production+Ready+Template;🔥+Zero+External+Dependencies" alt="Typing SVG" />
   </a>
 </p>
 
@@ -57,18 +57,16 @@ A minimal, perfect, reusable template for modern web and API development using t
 ## Quick Start
 
 ```bash
-# Install tools
-go install github.com/a-h/templ/cmd/templ@latest
-go install github.com/sqlc-dev/sqlc/cmd/sqlc@latest
-
-# Setup project
+# Clone and setup
 git clone https://github.com/dunamismax/go-web-server.git
 cd go-web-server
 go mod tidy
 
-# Generate code and start server (http://localhost:8080)
-go generate ./...
-go run ./cmd/web
+# Install dependencies and run
+make deps
+make run
+
+# Server starts at http://localhost:8080
 ```
 
 ## Applications
@@ -79,23 +77,21 @@ Interactive web application showcasing Echo + Templ + HTMX + Pico.css + SQLC int
 
 ## Development Commands
 
-**Core Commands:**
-
 ```bash
-go generate ./...       # Generate templ and sqlc code
-go run ./cmd/web        # Start web server
-go build -o bin/server ./cmd/web  # Build production binary
-go test ./...           # Run all tests
-```
+# Development
+make run                # Build and run server
+make dev                # Run with hot reload (requires air)
+make test               # Run tests
+make lint               # Run linting and security checks
 
-**Code Quality:**
+# Build & Deploy
+make build              # Build production binary
+make clean              # Remove build artifacts
+make deps               # Install development tools
 
-```bash
-go fmt ./...            # Format code
-go vet ./...            # Vet code
-go mod tidy             # Tidy modules
-templ generate          # Generate templ templates
-sqlc generate           # Generate database queries
+# Code Generation
+make generate           # Generate templ + sqlc code
+make help               # Show all available commands
 ```
 
 ## Project Structure
@@ -104,15 +100,17 @@ sqlc generate           # Generate database queries
 go-web-server/
 ├── cmd/web/              # Application entry point
 ├── internal/
-│   ├── handler/          # Echo HTTP handlers
+│   ├── handler/          # HTTP handlers & centralized routes
 │   ├── view/             # Templ templates (.templ files)
-│   ├── store/            # SQLC generated database code
-│   ├── db/               # SQL schema and queries
+│   ├── store/            # Database layer (SQL + generated code)
 │   └── config/           # Configuration management
-├── ui/                   # Static assets
-│   ├── static/           # Embedded Pico.css & HTMX
+├── migrations/           # Database migrations
+├── deploy/               # Production deployment files
+├── ui/                   # Static assets (embedded)
+│   ├── static/           # Pico.css & HTMX
 │   └── embed.go          # Go embed directive
 ├── bin/                  # Compiled binaries
+├── Makefile             # Build automation
 └── sqlc.yaml            # SQLC configuration
 ```
 
@@ -121,10 +119,12 @@ go-web-server/
 ### Single Binary
 
 ```bash
-go build -o server ./cmd/web  # Creates optimized binary
+make build  # Creates optimized binary in bin/server
 ```
 
 The binary includes embedded Pico.css, HTMX, Templ templates, and SQLite database. **Zero external dependencies**, ~10-15MB size, instant startup.
+
+Complete deployment guides and configuration files are provided in the `/deploy` directory.
 
 ### Environment Variables
 

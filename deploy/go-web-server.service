@@ -1,0 +1,57 @@
+# systemd service file for Go Web Server
+# Place this file in /etc/systemd/system/go-web-server.service
+# 
+# To install:
+# 1. sudo cp deploy/go-web-server.service /etc/systemd/system/
+# 2. sudo systemctl daemon-reload
+# 3. sudo systemctl enable go-web-server
+# 4. sudo systemctl start go-web-server
+
+[Unit]
+Description=Go Web Server
+Documentation=https://github.com/your-username/go-web-server
+After=network.target
+Requires=network.target
+
+[Service]
+Type=simple
+User=www-data
+Group=www-data
+
+# Adjust these paths to match your deployment
+WorkingDirectory=/opt/go-web-server
+ExecStart=/opt/go-web-server/bin/server
+
+# Environment variables (adjust as needed)
+Environment=ENVIRONMENT=production
+Environment=PORT=8080
+Environment=HOST=127.0.0.1
+Environment=DATABASE_URL=/opt/go-web-server/data/app.db
+Environment=LOG_LEVEL=info
+Environment=LOG_FORMAT=json
+
+# Security settings
+NoNewPrivileges=yes
+PrivateTmp=yes
+ProtectSystem=strict
+ProtectHome=yes
+ReadWritePaths=/opt/go-web-server/data /tmp
+
+# Resource limits
+LimitNOFILE=65536
+LimitNPROC=4096
+
+# Restart policy
+Restart=on-failure
+RestartSec=5
+StartLimitBurst=3
+StartLimitInterval=60s
+
+# Health check
+ExecReload=/bin/kill -HUP $MAINPID
+KillMode=process
+KillSignal=SIGTERM
+TimeoutStopSec=30
+
+[Install]
+WantedBy=multi-user.target
