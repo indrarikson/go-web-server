@@ -26,6 +26,9 @@ jobs:
     - name: Install SQLite
       run: sudo apt-get update && sudo apt-get install -y sqlite3
 
+    - name: Setup development tools
+      run: mage setup
+
     - name: Run CI pipeline
       run: mage ci
 
