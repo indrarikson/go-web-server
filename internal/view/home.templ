@@ -1,0 +1,40 @@
+package view
+
+import "github.com/dunamismax/go-web-server/internal/view/layout"
+
+templ Home() {
+	@layout.Base("Home") {
+		<section>
+			<hgroup>
+				<h1>Welcome to Go Web Server</h1>
+				<p>A minimal, perfect, reusable template for modern web development</p>
+			</hgroup>
+		</section>
+		
+		<section>
+			<div class="grid">
+				<article>
+					<header><h3>🚀 Modern Stack</h3></header>
+					<p>Built with Go 1.24, Echo framework, templ templating, HTMX interactivity, and Pico.css styling.</p>
+				</article>
+				<article>
+					<header><h3>📦 Single Binary</h3></header>
+					<p>Everything embedded into one executable. No external dependencies, easy deployment.</p>
+				</article>
+				<article>
+					<header><h3>🔧 Type Safe</h3></header>
+					<p>SQLC generates type-safe database code. Templ provides compile-time HTML validation.</p>
+				</article>
+			</div>
+		</section>
+		
+		<section>
+			<h2>Quick Actions</h2>
+			<div class="grid">
+				<button hx-get="/users" hx-target="#user-list" hx-swap="innerHTML">Load Users</button>
+				<button onclick="alert('Hello from HTMX + Go!')">Test Interaction</button>
+			</div>
+			<div id="user-list"></div>
+		</section>
+	}
+}

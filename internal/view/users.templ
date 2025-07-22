@@ -1,0 +1,81 @@
+package view
+
+import (
+	"fmt"
+	"github.com/dunamismax/go-web-server/internal/view/layout"
+	"github.com/dunamismax/go-web-server/internal/store"
+)
+
+templ Users(users []store.User) {
+	@layout.Base("Users") {
+		<section>
+			<hgroup>
+				<h1>Users</h1>
+				<p>Manage user accounts</p>
+			</hgroup>
+		</section>
+		
+		<section>
+			<h2>Add New User</h2>
+			<form hx-post="/users" hx-target="#user-list" hx-swap="innerHTML">
+				<div class="grid">
+					<input type="text" name="name" placeholder="Full Name" required/>
+					<input type="email" name="email" placeholder="Email Address" required/>
+					<button type="submit">Add User</button>
+				</div>
+			</form>
+		</section>
+		
+		<section>
+			<h2>Current Users</h2>
+			<div id="user-list">
+				@UserList(users)
+			</div>
+		</section>
+	}
+}
+
+templ UserList(users []store.User) {
+	if len(users) == 0 {
+		<p><em>No users found. Add some users above!</em></p>
+	} else {
+		<table>
+			<thead>
+				<tr>
+					<th>ID</th>
+					<th>Name</th>
+					<th>Email</th>
+					<th>Created</th>
+					<th>Actions</th>
+				</tr>
+			</thead>
+			<tbody>
+				for _, user := range users {
+					<tr>
+						<td>{ fmt.Sprintf("%d", user.ID) }</td>
+						<td>{ user.Name }</td>
+						<td>{ user.Email }</td>
+						<td>
+							if user.CreatedAt.Valid {
+								{ user.CreatedAt.Time.Format("2006-01-02 15:04") }
+							} else {
+								{ "N/A" }
+							}
+						</td>
+						<td>
+							<button 
+								class="secondary" 
+								hx-delete={ "/users/" + fmt.Sprintf("%d", user.ID) }
+								hx-target="#user-list" 
+								hx-swap="innerHTML"
+								hx-confirm="Delete this user?"
+							>
+								Delete
+							</button>
+						</td>
+					</tr>
+				}
+			</tbody>
+		</table>
+	}
+}

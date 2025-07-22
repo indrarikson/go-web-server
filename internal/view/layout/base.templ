@@ -1,0 +1,34 @@
+package layout
+
+templ Base(title string) {
+	<!DOCTYPE html>
+	<html lang="en" data-theme="light">
+		<head>
+			<meta charset="utf-8"/>
+			<meta name="viewport" content="width=device-width, initial-scale=1"/>
+			<title>{ title } - Go Web Server</title>
+			<link rel="stylesheet" href="/static/css/pico.min.css"/>
+			<script src="/static/js/htmx.min.js"></script>
+		</head>
+		<body>
+			<header>
+				<nav class="container">
+					<ul>
+						<li><strong><a href="/" class="contrast">Go Web Server</a></strong></li>
+					</ul>
+					<ul>
+						<li><a href="/">Home</a></li>
+						<li><a href="/users">Users</a></li>
+					</ul>
+				</nav>
+			</header>
+			<main class="container">
+				{ children... }
+			</main>
+			<footer class="container">
+				<hr/>
+				<p><small>Built with Go 1.24, Echo, templ, HTMX, and Pico.css &copy; 2025</small></p>
+			</footer>
+		</body>
+	</html>
+}
