@@ -1,0 +1,63 @@
+name: CI Pipeline
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  ci:
+    name: Continuous Integration
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Set up Go
+      uses: actions/setup-go@v5
+      with:
+        go-version: '1.24'
+        cache: true
+
+    - name: Install Mage
+      run: |
+        go install github.com/magefile/mage@latest
+        mage --version
+
+    - name: Setup development environment
+      run: mage setup
+
+    - name: Verify Go modules
+      run: go mod verify
+
+    - name: Generate code
+      run: mage generate:all
+
+    - name: Run quality checks
+      run: mage quality:all
+
+    - name: Run tests
+      run: mage test:all
+
+    - name: Build applications
+      run: mage build:all
+
+    - name: Run complete CI pipeline
+      run: mage ci
+
+    - name: Upload build artifacts
+      uses: actions/upload-artifact@v4
+      with:
+        name: binaries
+        path: bin/
+        retention-days: 30
+
+    - name: Check binary sizes
+      run: |
+        echo "📦 Binary Sizes:"
+        ls -lh bin/
+        echo ""
+        echo "🎯 Total Size:"
+        du -sh bin/

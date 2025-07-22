@@ -69,6 +69,51 @@ make run
 # Server starts at http://localhost:8080
 ```
 
+<p align="center">
+  <img src="docs/images/gopher-mage.svg" alt="Gopher Mage" width="200" />
+</p>
+
+## Mage Commands
+
+**Development:**
+
+```bash
+mage setup            # Install tools and dependencies
+mage generate:all     # Generate sqlc and templ code
+mage dev:server       # Start web development server
+mage dev:tui          # Start TUI development tool
+```
+
+**Build & Test:**
+
+```bash
+mage build:all        # Build all applications
+mage build:webapp     # Build web application only
+mage build:tui        # Build TUI tool only
+mage test:all         # Run all tests
+mage test:webapp      # Run web application tests
+mage test:tui         # Run TUI tool tests
+```
+
+**Database:**
+
+```bash
+mage database:up      # Run database migrations
+mage database:down    # Rollback latest migration
+mage database:reset   # Reset database (drop & recreate)
+```
+
+**Quality & Production:**
+
+```bash
+mage quality:all      # Run all quality checks
+mage quality:fmt      # Format Go code
+mage quality:vet      # Run go vet
+mage quality:vulncheck # Check for vulnerabilities
+mage clean            # Clean build artifacts
+mage ci               # Full CI pipeline
+```
+
 ## Applications
 
 ### Web Demo (`localhost:8080`)
@@ -103,12 +148,11 @@ go-web-server/
 │   ├── handler/          # HTTP handlers & centralized routes
 │   ├── view/             # Templ templates (.templ files)
 │   ├── store/            # Database layer (SQL + generated code)
-│   └── config/           # Configuration management
-├── migrations/           # Database migrations
-├── deploy/               # Production deployment files
-├── ui/                   # Static assets (embedded)
-│   ├── static/           # Pico.css & HTMX
-│   └── embed.go          # Go embed directive
+│   │   └── migrations/   # Database migrations
+│   ├── config/           # Configuration management
+│   └── ui/               # Static assets (embedded)
+│       ├── static/       # Pico.css & HTMX
+│       └── embed.go      # Go embed directive
 ├── bin/                  # Compiled binaries
 ├── Makefile             # Build automation
 └── sqlc.yaml            # SQLC configuration
@@ -124,7 +168,7 @@ make build  # Creates optimized binary in bin/server
 
 The binary includes embedded Pico.css, HTMX, Templ templates, and SQLite database. **Zero external dependencies**, ~10-15MB size, instant startup.
 
-Complete deployment guides and configuration files are provided in the `/deploy` directory.
+The binary includes embedded static assets, templates, and SQLite database for easy deployment.
 
 ### Environment Variables
 

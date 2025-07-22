@@ -5,7 +5,7 @@ import (
 	"net/http"
 
 	"github.com/dunamismax/go-web-server/internal/store"
-	"github.com/dunamismax/go-web-server/ui"
+	"github.com/dunamismax/go-web-server/internal/ui"
 	"github.com/labstack/echo/v4"
 	"log/slog"
 )
