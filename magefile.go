@@ -84,7 +84,7 @@ func Dev() error {
 	// Check if air is installed, install if not
 	if err := sh.Run("which", "air"); err != nil {
 		fmt.Println("Installing air...")
-		if err := sh.RunV("go", "install", "github.com/cosmtrek/air@latest"); err != nil {
+		if err := sh.RunV("go", "install", "github.com/air-verse/air@latest"); err != nil {
 			return err
 		}
 	}
@@ -118,7 +118,7 @@ func Setup() error {
 		"templ":        "github.com/a-h/templ/cmd/templ@latest",
 		"sqlc":         "github.com/sqlc-dev/sqlc/cmd/sqlc@latest",
 		"govulncheck":  "golang.org/x/vuln/cmd/govulncheck@latest",
-		"air":          "github.com/cosmtrek/air@latest",
+		"air":          "github.com/air-verse/air@latest",
 	}
 	
 	for tool, pkg := range tools {
