@@ -3,7 +3,6 @@ package view
 import (
 	"database/sql"
 	"strconv"
-	"time"
 	"github.com/dunamismax/go-web-server/internal/view/layout"
 	"github.com/dunamismax/go-web-server/internal/store"
 )
@@ -12,7 +11,7 @@ templ Users() {
 	@layout.Base("Users") {
 		<section>
 			<hgroup>
-				<h1>👥 User Management</h1>
+				<h1>User Management</h1>
 				<p>Manage users with real-time updates powered by HTMX</p>
 			</hgroup>
 			<div class="grid">
@@ -27,7 +26,7 @@ templ Users() {
 						hx-target="#user-form-modal" 
 						hx-swap="innerHTML"
 						class="contrast">
-						➕ Add New User
+						 Add New User
 					</button>
 				</div>
 			</div>
@@ -53,7 +52,7 @@ templ UserList(users []store.User) {
 	if len(users) == 0 {
 		<article>
 			<header>
-				<h3>📝 No Users Yet</h3>
+				<h3>No Users Yet</h3>
 			</header>
 			<p>Get started by adding your first user. Click the "Add New User" button above.</p>
 		</article>
@@ -122,7 +121,7 @@ templ UserRow(user store.User) {
 					hx-swap="innerHTML"
 					class="outline secondary"
 					style="padding: 0.25rem 0.5rem;">
-					✏️
+					Edit
 				</button>
 				if user.IsActive.Valid && user.IsActive.Bool {
 					<button 
@@ -132,7 +131,7 @@ templ UserRow(user store.User) {
 						hx-confirm="Deactivate this user?"
 						class="outline"
 						style="padding: 0.25rem 0.5rem;">
-						🔒
+						Deactivate
 					</button>
 				}
 				<button 
@@ -142,7 +141,7 @@ templ UserRow(user store.User) {
 					hx-confirm="Are you sure you want to permanently delete this user?"
 					class="outline"
 					style="padding: 0.25rem 0.5rem; color: var(--pico-color-red-500);">
-					🗑️
+					Delete
 				</button>
 			</div>
 		</td>
@@ -223,7 +222,7 @@ templ UserForm(user *store.User) {
 					</button>
 					<button type="submit">
 						<span>{ getSubmitButtonText(user) }</span>
-						<span class="htmx-indicator" aria-hidden="true">⏳</span>
+						<span class="htmx-indicator" aria-hidden="true">Loading...</span>
 					</button>
 				</div>
 			</footer>
@@ -272,15 +271,15 @@ func getUserAvatarUrl(user *store.User) string {
 
 func getFormTitle(user *store.User) string {
 	if user != nil {
-		return "✏️ Edit User"
+		return "Edit User"
 	}
-	return "➕ Add New User"
+	return "Add New User"
 }
 
 func getSubmitButtonText(user *store.User) string {
 	if user != nil {
-		return "💾 Update User"
+		return "Update User"
 	}
-	return "➕ Create User"
+	return "Create User"
 }
 
