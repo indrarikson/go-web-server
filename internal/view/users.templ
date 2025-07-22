@@ -2,9 +2,9 @@ package view
 
 import (
 	"database/sql"
-	"strconv"
-	"github.com/dunamismax/go-web-server/internal/view/layout"
 	"github.com/dunamismax/go-web-server/internal/store"
+	"github.com/dunamismax/go-web-server/internal/view/layout"
+	"strconv"
 )
 
 templ Users() {
@@ -21,29 +21,29 @@ templ Users() {
 					</p>
 				</div>
 				<div style="text-align: right;">
-					<button 
-						hx-get="/users/form" 
-						hx-target="#user-form-modal" 
+					<button
+						hx-get="/users/form"
+						hx-target="#user-form-modal"
 						hx-swap="innerHTML"
-						class="contrast">
-						 Add New User
+						class="contrast"
+					>
+						Add New User
 					</button>
 				</div>
 			</div>
 		</section>
-		
 		<section>
-			<div 
-				hx-get="/users/list" 
-				hx-trigger="load, userCreated from:body, userDeleted from:body" 
-				hx-swap="innerHTML" 
-				id="user-list-container">
+			<div
+				hx-get="/users/list"
+				hx-trigger="load, userCreated from:body, userDeleted from:body"
+				hx-swap="innerHTML"
+				id="user-list-container"
+			>
 				<article aria-busy="true">
 					<header><h4>Loading users...</h4></header>
 				</article>
 			</div>
 		</section>
-		
 		<div id="user-form-modal"></div>
 	}
 }
@@ -115,32 +115,35 @@ templ UserRow(user store.User) {
 		</td>
 		<td>
 			<div role="group">
-				<button 
+				<button
 					hx-get={ "/users/" + strconv.FormatInt(user.ID, 10) + "/edit" }
-					hx-target="#user-form-modal" 
+					hx-target="#user-form-modal"
 					hx-swap="innerHTML"
 					class="outline secondary"
-					style="padding: 0.25rem 0.5rem;">
+					style="padding: 0.25rem 0.5rem;"
+				>
 					Edit
 				</button>
 				if user.IsActive.Valid && user.IsActive.Bool {
-					<button 
+					<button
 						hx-patch={ "/users/" + strconv.FormatInt(user.ID, 10) + "/deactivate" }
 						hx-target={ "#user-" + strconv.FormatInt(user.ID, 10) }
 						hx-swap="outerHTML"
 						hx-confirm="Deactivate this user?"
 						class="outline"
-						style="padding: 0.25rem 0.5rem;">
+						style="padding: 0.25rem 0.5rem;"
+					>
 						Deactivate
 					</button>
 				}
-				<button 
+				<button
 					hx-delete={ "/users/" + strconv.FormatInt(user.ID, 10) }
 					hx-target={ "#user-" + strconv.FormatInt(user.ID, 10) }
 					hx-swap="outerHTML"
 					hx-confirm="Are you sure you want to permanently delete this user?"
 					class="outline"
-					style="padding: 0.25rem 0.5rem; color: var(--pico-color-red-500);">
+					style="padding: 0.25rem 0.5rem; color: var(--pico-color-red-500);"
+				>
 					Delete
 				</button>
 			</div>
@@ -152,72 +155,73 @@ templ UserForm(user *store.User) {
 	<article>
 		<header>
 			<h3>{ getFormTitle(user) }</h3>
-			<button 
+			<button
 				aria-label="Close"
 				rel="prev"
-				onclick="document.getElementById('user-form-modal').innerHTML = ''">
-			</button>
+				onclick="document.getElementById('user-form-modal').innerHTML = ''"
+			></button>
 		</header>
-		
-		<form 
+		<form
 			if user != nil {
 				hx-put={ "/users/" + strconv.FormatInt(user.ID, 10) }
 			} else {
 				hx-post="/users"
 			}
-			hx-target="#user-list-container" 
+			hx-target="#user-list-container"
 			hx-swap="innerHTML"
-			hx-on::after-request="if(event.detail.successful) document.getElementById('user-form-modal').innerHTML = ''">
-			
+			hx-on::after-request="if(event.detail.successful) document.getElementById('user-form-modal').innerHTML = ''"
+		>
 			<div class="grid">
 				<label for="name">
 					Name *
-					<input 
-						type="text" 
-						id="name" 
-						name="name" 
+					<input
+						type="text"
+						id="name"
+						name="name"
 						value={ getUserName(user) }
-						required 
-						placeholder="Enter full name"/>
+						required
+						placeholder="Enter full name"
+					/>
 				</label>
 				<label for="email">
 					Email *
-					<input 
-						type="email" 
-						id="email" 
-						name="email" 
+					<input
+						type="email"
+						id="email"
+						name="email"
 						value={ getUserEmail(user) }
-						required 
-						placeholder="user@example.com"/>
+						required
+						placeholder="user@example.com"
+					/>
 				</label>
 			</div>
-			
 			<label for="bio">
 				Bio
-				<textarea 
-					id="bio" 
-					name="bio" 
+				<textarea
+					id="bio"
+					name="bio"
 					placeholder="Tell us about yourself..."
-					rows="3">{ getUserBio(user) }</textarea>
+					rows="3"
+				>{ getUserBio(user) }</textarea>
 			</label>
-			
 			<label for="avatar_url">
 				Avatar URL
-				<input 
-					type="url" 
-					id="avatar_url" 
-					name="avatar_url" 
+				<input
+					type="url"
+					id="avatar_url"
+					name="avatar_url"
 					value={ getUserAvatarUrl(user) }
-					placeholder="https://example.com/avatar.jpg"/>
+					placeholder="https://example.com/avatar.jpg"
+				/>
 				<small>Provide a URL to an image for the user's avatar</small>
 			</label>
-			
 			<footer>
 				<div role="group">
-					<button 
+					<button
 						type="button"
 						class="secondary"
-						onclick="document.getElementById('user-form-modal').innerHTML = ''">
+						onclick="document.getElementById('user-form-modal').innerHTML = ''"
+					>
 						Cancel
 					</button>
 					<button type="submit">
@@ -282,4 +286,3 @@ func getSubmitButtonText(user *store.User) string {
 	}
 	return "Create User"
 }
-

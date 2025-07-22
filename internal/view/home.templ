@@ -17,19 +17,19 @@ templ Home() {
 					</p>
 				</div>
 				<div>
-					<button 
-						hx-get="/users/list" 
-						hx-target="#demo-area" 
+					<button
+						hx-get="/users/list"
+						hx-target="#demo-area"
 						hx-swap="innerHTML"
 						hx-trigger="click"
-						class="contrast">
+						class="contrast"
+					>
 						<span>Try Live Demo</span>
 						<span class="htmx-indicator" aria-hidden="true">Loading...</span>
 					</button>
 				</div>
 			</div>
 		</section>
-		
 		<section>
 			<h2>Tech Stack Features</h2>
 			<div class="grid">
@@ -38,7 +38,8 @@ templ Home() {
 						<h4>Performance First</h4>
 					</header>
 					<p>
-						<strong>Echo Framework:</strong> High-performance HTTP router with middleware support.<br/>
+						<strong>Echo Framework:</strong> High-performance HTTP router with middleware support.
+						<br/>
 						<strong>Go 1.24:</strong> Latest performance improvements and language features.
 					</p>
 					<details>
@@ -56,7 +57,8 @@ templ Home() {
 						<h4>Type Safety</h4>
 					</header>
 					<p>
-						<strong>SQLC:</strong> Generate type-safe Go code from SQL queries.<br/>
+						<strong>SQLC:</strong> Generate type-safe Go code from SQL queries.
+						<br/>
 						<strong>Templ:</strong> Compile-time validated HTML templates.
 					</p>
 					<details>
@@ -74,7 +76,8 @@ templ Home() {
 						<h4>Modern UI/UX</h4>
 					</header>
 					<p>
-						<strong>HTMX 2.x:</strong> Dynamic interactions without JavaScript complexity.<br/>
+						<strong>HTMX 2.x:</strong> Dynamic interactions without JavaScript complexity.
+						<br/>
 						<strong>Pico.css v2:</strong> Beautiful semantic CSS with dark mode.
 					</p>
 					<details>
@@ -89,35 +92,36 @@ templ Home() {
 				</article>
 			</div>
 		</section>
-		
 		<section>
 			<h2>Quick Actions</h2>
 			<div class="grid">
 				<div role="group">
-					<button 
-						hx-get="/users/list" 
-						hx-target="#demo-area" 
+					<button
+						hx-get="/users/list"
+						hx-target="#demo-area"
 						hx-swap="innerHTML"
-						hx-trigger="click">
-						 Load Users
+						hx-trigger="click"
+					>
+						Load Users
 						<span class="htmx-indicator" aria-hidden="true">Loading...</span>
 					</button>
-					<button 
-						hx-get="/health" 
-						hx-target="#demo-area" 
+					<button
+						hx-get="/health"
+						hx-target="#demo-area"
 						hx-swap="innerHTML"
-						class="secondary">
-						 Health Check
+						class="secondary"
+					>
+						Health Check
 					</button>
-					<button 
+					<button
 						onclick="showFlash('Hello from the Modern Go Stack!', 'success')"
-						class="outline">
-						 Test Flash Message
+						class="outline"
+					>
+						Test Flash Message
 					</button>
 				</div>
 			</div>
 		</section>
-		
 		<section>
 			<div id="demo-area">
 				<article>
@@ -127,14 +131,13 @@ templ Home() {
 					<p>Click the buttons above to see HTMX in action. This area will be dynamically updated with content from the server.</p>
 					<p>
 						<small>
-							<strong>Developer Tip:</strong> 
+							<strong>Developer Tip:</strong>
 							Check the network tab to see how HTMX makes partial page updates with minimal JavaScript.
 						</small>
 					</p>
 				</article>
 			</div>
 		</section>
-		
 		<section>
 			<h2>What's Included</h2>
 			<div class="grid">
@@ -167,7 +170,6 @@ templ Home() {
 				</div>
 			</div>
 		</section>
-		
 		<section>
 			<article>
 				<header>
@@ -176,19 +178,19 @@ templ Home() {
 				<div class="grid">
 					<div>
 						<p>
-							<strong>Web Applications:</strong> 
+							<strong>Web Applications:</strong>
 							Build full-stack apps with server-side rendering and dynamic client interactions.
 						</p>
 					</div>
 					<div>
 						<p>
-							<strong>REST APIs:</strong> 
+							<strong>REST APIs:</strong>
 							Create high-performance APIs with type-safe database operations.
 						</p>
 					</div>
 					<div>
 						<p>
-							<strong>Enterprise Apps:</strong> 
+							<strong>Enterprise Apps:</strong>
 							Production-ready template with security, logging, and configuration best practices.
 						</p>
 					</div>

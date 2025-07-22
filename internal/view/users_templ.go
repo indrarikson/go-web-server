@@ -316,7 +316,7 @@ func UserRow(user store.User) templ.Component {
 			var templ_7745c5c3_Var15 string
 			templ_7745c5c3_Var15, templ_7745c5c3_Err = templ.JoinStringErrs("/users/" + strconv.FormatInt(user.ID, 10) + "/deactivate")
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `internal/view/users.templ`, Line: 128, Col: 75}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `internal/view/users.templ`, Line: 129, Col: 75}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var15))
 			if templ_7745c5c3_Err != nil {
@@ -329,7 +329,7 @@ func UserRow(user store.User) templ.Component {
 			var templ_7745c5c3_Var16 string
 			templ_7745c5c3_Var16, templ_7745c5c3_Err = templ.JoinStringErrs("#user-" + strconv.FormatInt(user.ID, 10))
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `internal/view/users.templ`, Line: 129, Col: 59}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `internal/view/users.templ`, Line: 130, Col: 59}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var16))
 			if templ_7745c5c3_Err != nil {
@@ -347,7 +347,7 @@ func UserRow(user store.User) templ.Component {
 		var templ_7745c5c3_Var17 string
 		templ_7745c5c3_Var17, templ_7745c5c3_Err = templ.JoinStringErrs("/users/" + strconv.FormatInt(user.ID, 10))
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `internal/view/users.templ`, Line: 138, Col: 59}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `internal/view/users.templ`, Line: 140, Col: 59}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var17))
 		if templ_7745c5c3_Err != nil {
@@ -360,7 +360,7 @@ func UserRow(user store.User) templ.Component {
 		var templ_7745c5c3_Var18 string
 		templ_7745c5c3_Var18, templ_7745c5c3_Err = templ.JoinStringErrs("#user-" + strconv.FormatInt(user.ID, 10))
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `internal/view/users.templ`, Line: 139, Col: 58}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `internal/view/users.templ`, Line: 141, Col: 58}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var18))
 		if templ_7745c5c3_Err != nil {
@@ -402,7 +402,7 @@ func UserForm(user *store.User) templ.Component {
 		var templ_7745c5c3_Var20 string
 		templ_7745c5c3_Var20, templ_7745c5c3_Err = templ.JoinStringErrs(getFormTitle(user))
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `internal/view/users.templ`, Line: 154, Col: 27}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `internal/view/users.templ`, Line: 157, Col: 27}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var20))
 		if templ_7745c5c3_Err != nil {
@@ -420,7 +420,7 @@ func UserForm(user *store.User) templ.Component {
 			var templ_7745c5c3_Var21 string
 			templ_7745c5c3_Var21, templ_7745c5c3_Err = templ.JoinStringErrs("/users/" + strconv.FormatInt(user.ID, 10))
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `internal/view/users.templ`, Line: 164, Col: 55}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `internal/view/users.templ`, Line: 166, Col: 55}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var21))
 			if templ_7745c5c3_Err != nil {
@@ -443,7 +443,7 @@ func UserForm(user *store.User) templ.Component {
 		var templ_7745c5c3_Var22 string
 		templ_7745c5c3_Var22, templ_7745c5c3_Err = templ.JoinStringErrs(getUserName(user))
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `internal/view/users.templ`, Line: 179, Col: 31}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `internal/view/users.templ`, Line: 181, Col: 31}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var22))
 		if templ_7745c5c3_Err != nil {
@@ -456,7 +456,7 @@ func UserForm(user *store.User) templ.Component {
 		var templ_7745c5c3_Var23 string
 		templ_7745c5c3_Var23, templ_7745c5c3_Err = templ.JoinStringErrs(getUserEmail(user))
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `internal/view/users.templ`, Line: 189, Col: 32}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `internal/view/users.templ`, Line: 192, Col: 32}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var23))
 		if templ_7745c5c3_Err != nil {
@@ -469,7 +469,7 @@ func UserForm(user *store.User) templ.Component {
 		var templ_7745c5c3_Var24 string
 		templ_7745c5c3_Var24, templ_7745c5c3_Err = templ.JoinStringErrs(getUserBio(user))
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `internal/view/users.templ`, Line: 201, Col: 32}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `internal/view/users.templ`, Line: 205, Col: 23}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var24))
 		if templ_7745c5c3_Err != nil {
@@ -482,7 +482,7 @@ func UserForm(user *store.User) templ.Component {
 		var templ_7745c5c3_Var25 string
 		templ_7745c5c3_Var25, templ_7745c5c3_Err = templ.JoinStringErrs(getUserAvatarUrl(user))
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `internal/view/users.templ`, Line: 210, Col: 35}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `internal/view/users.templ`, Line: 213, Col: 35}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var25))
 		if templ_7745c5c3_Err != nil {
@@ -495,7 +495,7 @@ func UserForm(user *store.User) templ.Component {
 		var templ_7745c5c3_Var26 string
 		templ_7745c5c3_Var26, templ_7745c5c3_Err = templ.JoinStringErrs(getSubmitButtonText(user))
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `internal/view/users.templ`, Line: 224, Col: 39}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `internal/view/users.templ`, Line: 228, Col: 39}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var26))
 		if templ_7745c5c3_Err != nil {
@@ -533,7 +533,7 @@ func UserCount(count int64) templ.Component {
 		var templ_7745c5c3_Var28 string
 		templ_7745c5c3_Var28, templ_7745c5c3_Err = templ.JoinStringErrs(strconv.FormatInt(count, 10))
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `internal/view/users.templ`, Line: 234, Col: 31}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `internal/view/users.templ`, Line: 238, Col: 31}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var28))
 		if templ_7745c5c3_Err != nil {

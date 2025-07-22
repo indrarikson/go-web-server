@@ -12,6 +12,9 @@ import (
 	"github.com/dunamismax/go-web-server/internal/config"
 	"github.com/dunamismax/go-web-server/internal/handler"
 	"github.com/dunamismax/go-web-server/internal/store"
+	"github.com/golang-migrate/migrate/v4"
+	_ "github.com/golang-migrate/migrate/v4/database/sqlite"
+	_ "github.com/golang-migrate/migrate/v4/source/file"
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
 )
@@ -81,29 +84,91 @@ func main() {
 	e.Server.ReadTimeout = cfg.ReadTimeout
 	e.Server.WriteTimeout = cfg.WriteTimeout
 
-	// Middleware
-	if cfg.Debug {
-		e.Use(middleware.LoggerWithConfig(middleware.LoggerConfig{
-			Format: "method=${method}, uri=${uri}, status=${status}, latency=${latency_human}\n",
-		}))
-	}
+	// Middleware stack (order matters)
 
-	e.Use(middleware.Recover())
-	e.Use(middleware.Secure())
+	// Recovery middleware (should be first)
+	e.Use(middleware.RecoverWithConfig(middleware.RecoverConfig{
+		LogErrorFunc: func(c echo.Context, err error, stack []byte) error {
+			slog.Error("panic recovered",
+				"error", err,
+				"path", c.Request().URL.Path,
+				"method", c.Request().Method,
+				"request_id", c.Response().Header().Get(echo.HeaderXRequestID))
+			return nil
+		},
+	}))
 
+	// Request ID middleware for tracing
+	e.Use(middleware.RequestID())
+
+	// Structured logging middleware
+	e.Use(middleware.RequestLoggerWithConfig(middleware.RequestLoggerConfig{
+		LogStatus:    true,
+		LogURI:       true,
+		LogError:     true,
+		LogMethod:    true,
+		LogLatency:   true,
+		LogRemoteIP:  true,
+		LogUserAgent: cfg.Debug,
+		LogValuesFunc: func(c echo.Context, v middleware.RequestLoggerValues) error {
+			if v.Error == nil {
+				slog.Info("request",
+					"method", v.Method,
+					"uri", v.URI,
+					"status", v.Status,
+					"latency", v.Latency.String(),
+					"remote_ip", v.RemoteIP,
+					"request_id", v.RequestID)
+			} else {
+				slog.Error("request error",
+					"method", v.Method,
+					"uri", v.URI,
+					"status", v.Status,
+					"latency", v.Latency.String(),
+					"remote_ip", v.RemoteIP,
+					"request_id", v.RequestID,
+					"error", v.Error)
+			}
+			return nil
+		},
+	}))
+
+	// Security middleware
+	e.Use(middleware.SecureWithConfig(middleware.SecureConfig{
+		XSSProtection:         "1; mode=block",
+		ContentTypeNosniff:    "nosniff",
+		XFrameOptions:         "DENY",
+		HSTSMaxAge:            31536000,
+		ContentSecurityPolicy: "default-src 'self'; style-src 'self' 'unsafe-inline'; script-src 'self' 'unsafe-inline'",
+	}))
+
+	// CORS middleware
 	if cfg.EnableCORS {
 		e.Use(middleware.CORSWithConfig(middleware.CORSConfig{
 			AllowOrigins: cfg.AllowedOrigins,
 			AllowMethods: []string{http.MethodGet, http.MethodPost, http.MethodPut, http.MethodPatch, http.MethodDelete},
 			AllowHeaders: []string{"*"},
+			MaxAge:       86400,
 		}))
 	}
 
-	// Request ID middleware for tracing
-	e.Use(middleware.RequestID())
+	// Rate limiting
+	e.Use(middleware.RateLimiterWithConfig(middleware.RateLimiterConfig{
+		Store: middleware.NewRateLimiterMemoryStore(20),
+		IdentifierExtractor: func(c echo.Context) (string, error) {
+			return c.RealIP(), nil
+		},
+		ErrorHandler: func(context echo.Context, err error) error {
+			return context.JSON(http.StatusTooManyRequests, map[string]string{
+				"error": "rate limit exceeded",
+			})
+		},
+	}))
 
-	// Rate limiting (basic)
-	e.Use(middleware.RateLimiter(middleware.NewRateLimiterMemoryStore(20)))
+	// Timeout middleware
+	e.Use(middleware.TimeoutWithConfig(middleware.TimeoutConfig{
+		Timeout: cfg.ReadTimeout,
+	}))
 
 	// Initialize handlers and register routes
 	handlers := handler.NewHandlers(store)
@@ -144,10 +209,27 @@ func main() {
 	slog.Info("Server shutdown complete")
 }
 
-// runMigrations runs database migrations if available
+// runMigrations runs database migrations using golang-migrate
 func runMigrations(databaseURL string) error {
-	// Placeholder for migration logic
-	// In a real implementation, you would use golang-migrate here
-	slog.Info("Migration system ready (placeholder - implement with golang-migrate)")
+	m, err := migrate.New(
+		"file://internal/store/migrations",
+		fmt.Sprintf("sqlite://%s", databaseURL),
+	)
+	if err != nil {
+		return fmt.Errorf("failed to create migration instance: %w", err)
+	}
+	defer m.Close()
+
+	err = m.Up()
+	if err != nil && err != migrate.ErrNoChange {
+		return fmt.Errorf("failed to run migrations: %w", err)
+	}
+
+	if err == migrate.ErrNoChange {
+		slog.Info("No new migrations to apply")
+	} else {
+		slog.Info("Database migrations completed successfully")
+	}
+
 	return nil
 }

@@ -131,15 +131,19 @@ templ Base(title string) {
 						<p><small>Built with Go 1.24, Echo, templ, HTMX 2.x, and Pico.css v2 &copy; 2025</small></p>
 					</div>
 					<div style="text-align: right;">
-						<p><small>
-							<a href="/health" 
-							   hx-get="/health" 
-							   hx-trigger="click" 
-							   hx-swap="innerHTML"
-							   class="contrast">
-								Health Check
-							</a>
-						</small></p>
+						<p>
+							<small>
+								<a
+									href="/health"
+									hx-get="/health"
+									hx-trigger="click"
+									hx-swap="innerHTML"
+									class="contrast"
+								>
+									Health Check
+								</a>
+							</small>
+						</p>
 					</div>
 				</div>
 			</footer>

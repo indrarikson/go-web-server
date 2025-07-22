@@ -5,9 +5,18 @@ package main
 import (
 	"fmt"
 	"os"
+	"path/filepath"
+	"runtime"
 
 	"github.com/magefile/mage/mg"
 	"github.com/magefile/mage/sh"
+)
+
+const (
+	packageName = "github.com/dunamismax/go-web-server"
+	binaryName  = "server"
+	buildDir    = "bin"
+	tmpDir      = "tmp"
 )
 
 // Default target to run when none is specified
@@ -20,72 +29,150 @@ func Build() error {
 }
 
 func buildServer() error {
-	fmt.Println("Building server...")
-	if err := sh.Run("mkdir", "-p", "bin"); err != nil {
-		return err
+	fmt.Println("🔨 Building server...")
+	
+	if err := sh.Run("mkdir", "-p", buildDir); err != nil {
+		return fmt.Errorf("failed to create build directory: %w", err)
 	}
-	return sh.RunV("go", "build", "-ldflags=-s -w", "-o", "./bin/server", "./cmd/web")
+
+	ldflags := "-s -w -X main.version=1.0.0 -X main.buildTime=" + getCurrentTime()
+	binaryPath := filepath.Join(buildDir, binaryName)
+	
+	// Add .exe extension on Windows
+	if runtime.GOOS == "windows" {
+		binaryPath += ".exe"
+	}
+
+	return sh.RunV("go", "build", "-ldflags="+ldflags, "-o", binaryPath, "./cmd/web")
+}
+
+func getCurrentTime() string {
+	output, err := sh.Output("date", "-u", "+%Y-%m-%dT%H:%M:%SZ")
+	if err != nil {
+		return "unknown"
+	}
+	return output
 }
 
 // Generate runs all code generation
 func Generate() error {
+	fmt.Println("⚡ Generating code...")
 	mg.Deps(generateSqlc, generateTempl)
 	return nil
 }
 
 func generateSqlc() error {
-	fmt.Println("Generating sqlc code...")
+	fmt.Println("  📊 Generating sqlc code...")
 	return sh.RunV("sqlc", "generate")
 }
 
 func generateTempl() error {
-	fmt.Println("Generating templ code...")
-	return sh.RunV("go", "generate", "./...")
+	fmt.Println("  🎨 Generating templ code...")
+	return sh.RunV("templ", "generate")
 }
 
-// Test runs all tests
+// Test runs all tests with coverage
 func Test() error {
-	fmt.Println("Running tests...")
-	return sh.RunV("go", "test", "-race", "-cover", "./...")
+	fmt.Println("🧪 Running tests...")
+	return sh.RunV("go", "test", "-race", "-coverprofile=coverage.out", "-covermode=atomic", "./...")
+}
+
+// TestVerbose runs tests with verbose output
+func TestVerbose() error {
+	fmt.Println("🧪 Running tests (verbose)...")
+	return sh.RunV("go", "test", "-race", "-v", "-coverprofile=coverage.out", "-covermode=atomic", "./...")
+}
+
+// Coverage shows test coverage report
+func Coverage() error {
+	mg.Deps(Test)
+	fmt.Println("📈 Generating coverage report...")
+	return sh.RunV("go", "tool", "cover", "-html=coverage.out", "-o", "coverage.html")
 }
 
 // Fmt formats and tidies code
 func Fmt() error {
-	fmt.Println("Tidying and formatting...")
+	fmt.Println("✨ Formatting and tidying...")
+	
 	if err := sh.RunV("go", "mod", "tidy"); err != nil {
-		return err
+		return fmt.Errorf("failed to tidy modules: %w", err)
 	}
-	return sh.RunV("go", "fmt", "./...")
+	
+	if err := sh.RunV("go", "fmt", "./..."); err != nil {
+		return fmt.Errorf("failed to format code: %w", err)
+	}
+	
+	// Format templ files if templ is available
+	if err := sh.Run("which", "templ"); err == nil {
+		fmt.Println("  🎨 Formatting templ files...")
+		if err := sh.RunV("templ", "fmt", "."); err != nil {
+			fmt.Printf("Warning: failed to format templ files: %v\n", err)
+		}
+	}
+	
+	return nil
 }
 
 // Vet analyzes code for common errors
 func Vet() error {
-	fmt.Println("Running go vet...")
+	fmt.Println("🔍 Running go vet...")
 	return sh.RunV("go", "vet", "./...")
 }
 
 // VulnCheck scans for known vulnerabilities
 func VulnCheck() error {
-	fmt.Println("Running vulnerability check...")
+	fmt.Println("🛡️  Running vulnerability check...")
 	return sh.RunV("govulncheck", "./...")
+}
+
+// StaticCheck runs staticcheck linter
+func StaticCheck() error {
+	fmt.Println("🔬 Running staticcheck...")
+	
+	// Try to find staticcheck in GOPATH/bin
+	gopath := os.Getenv("GOPATH")
+	if gopath == "" {
+		// Default GOPATH
+		if home := os.Getenv("HOME"); home != "" {
+			gopath = filepath.Join(home, "go")
+		}
+	}
+	
+	staticcheckPath := filepath.Join(gopath, "bin", "staticcheck")
+	
+	// Check if staticcheck exists, install if not
+	if _, err := os.Stat(staticcheckPath); os.IsNotExist(err) {
+		fmt.Println("Installing staticcheck...")
+		if err := sh.RunV("go", "install", "honnef.co/go/tools/cmd/staticcheck@latest"); err != nil {
+			return fmt.Errorf("failed to install staticcheck: %w", err)
+		}
+	}
+	
+	return sh.RunV(staticcheckPath, "./...")
 }
 
 // Run builds and runs the server
 func Run() error {
 	mg.SerialDeps(Build)
-	fmt.Println("Starting server...")
-	return sh.RunV("./bin/server")
+	fmt.Println("🚀 Starting server...")
+	
+	binaryPath := filepath.Join(buildDir, binaryName)
+	if runtime.GOOS == "windows" {
+		binaryPath += ".exe"
+	}
+	
+	return sh.RunV(binaryPath)
 }
 
 // Dev starts development server with hot reload
 func Dev() error {
-	fmt.Println("Starting development server with hot reload...")
+	fmt.Println("🔥 Starting development server with hot reload...")
 	
-	// Check if air is installed, install if not
+	// Ensure air is available
 	if err := sh.Run("which", "air"); err != nil {
 		fmt.Println("Installing air...")
 		if err := sh.RunV("go", "install", "github.com/air-verse/air@latest"); err != nil {
-			return err
+			return fmt.Errorf("failed to install air: %w", err)
 		}
 	}
 	
@@ -94,59 +181,110 @@ func Dev() error {
 
 // Clean removes built binaries and generated files
 func Clean() error {
-	fmt.Println("Cleaning up...")
+	fmt.Println("🧹 Cleaning up...")
 	
-	// Remove binaries
-	if err := sh.Rm("bin"); err != nil && !os.IsNotExist(err) {
-		return err
+	// Remove build directory
+	if err := sh.Rm(buildDir); err != nil && !os.IsNotExist(err) {
+		return fmt.Errorf("failed to remove build directory: %w", err)
 	}
 	
 	// Remove tmp directory
-	if err := sh.Rm("tmp"); err != nil && !os.IsNotExist(err) {
-		return err
+	if err := sh.Rm(tmpDir); err != nil && !os.IsNotExist(err) {
+		return fmt.Errorf("failed to remove tmp directory: %w", err)
 	}
 	
-	fmt.Println("Clean complete!")
+	// Remove coverage files
+	sh.Rm("coverage.out")
+	sh.Rm("coverage.html")
+	
+	fmt.Println("✅ Clean complete!")
 	return nil
 }
 
 // Setup installs required development tools
 func Setup() error {
-	fmt.Println("Setting up development environment...")
+	fmt.Println("🚀 Setting up development environment...")
 	
 	tools := map[string]string{
 		"templ":        "github.com/a-h/templ/cmd/templ@latest",
 		"sqlc":         "github.com/sqlc-dev/sqlc/cmd/sqlc@latest",
 		"govulncheck":  "golang.org/x/vuln/cmd/govulncheck@latest",
 		"air":          "github.com/air-verse/air@latest",
+		"staticcheck":  "honnef.co/go/tools/cmd/staticcheck@latest",
 	}
 	
 	for tool, pkg := range tools {
-		fmt.Printf("Installing %s...\n", tool)
+		fmt.Printf("  📦 Installing %s...\n", tool)
 		if err := sh.RunV("go", "install", pkg); err != nil {
 			return fmt.Errorf("failed to install %s: %w", tool, err)
 		}
 	}
 	
-	// Initialize module dependencies
-	fmt.Println("Downloading dependencies...")
+	// Download module dependencies
+	fmt.Println("📥 Downloading dependencies...")
 	if err := sh.RunV("go", "mod", "download"); err != nil {
-		return err
+		return fmt.Errorf("failed to download dependencies: %w", err)
 	}
 	
-	fmt.Println("Setup complete! Run 'mage dev' to start development with hot reload")
+	fmt.Println("✅ Setup complete!")
+	fmt.Println("💡 Next steps:")
+	fmt.Println("   • Run 'mage dev' to start development with hot reload")
+	fmt.Println("   • Run 'mage test' to run tests")
+	fmt.Println("   • Run 'mage build' to create production binary")
+	
 	return nil
 }
 
-// Lint runs all linters (vet + security scan)
+// Lint runs all linters and checks
 func Lint() error {
-	mg.Deps(Vet, VulnCheck)
+	fmt.Println("🔍 Running all linters...")
+	mg.Deps(Vet, StaticCheck, VulnCheck)
 	return nil
 }
 
 // CI runs all checks suitable for continuous integration
 func CI() error {
-	mg.SerialDeps(Generate, Fmt, Vet, VulnCheck, Test, Build)
-	fmt.Println("CI pipeline completed successfully!")
+	fmt.Println("🏗️  Running CI pipeline...")
+	mg.SerialDeps(Generate, Fmt, Lint, Test, Build)
+	
+	// Show build info
+	if err := showBuildInfo(); err != nil {
+		fmt.Printf("Warning: failed to show build info: %v\n", err)
+	}
+	
+	fmt.Println("✅ CI pipeline completed successfully!")
+	return nil
+}
+
+// Docker builds a Docker image (optional)
+func Docker() error {
+	fmt.Println("🐳 Building Docker image...")
+	return sh.RunV("docker", "build", "-t", "go-web-server", ".")
+}
+
+// showBuildInfo displays information about the built binary
+func showBuildInfo() error {
+	binaryPath := filepath.Join(buildDir, binaryName)
+	if runtime.GOOS == "windows" {
+		binaryPath += ".exe"
+	}
+	
+	if _, err := os.Stat(binaryPath); os.IsNotExist(err) {
+		return fmt.Errorf("binary not found: %s", binaryPath)
+	}
+	
+	fmt.Println("\n📦 Build Information:")
+	
+	// Show binary size
+	if info, err := os.Stat(binaryPath); err == nil {
+		size := info.Size()
+		fmt.Printf("   Binary size: %.2f MB\n", float64(size)/1024/1024)
+	}
+	
+	// Show Go version
+	if version, err := sh.Output("go", "version"); err == nil {
+		fmt.Printf("   Go version: %s\n", version)
+	}
+	
 	return nil
 }
