@@ -39,20 +39,20 @@ A minimal, perfect, reusable template for modern web and API development using t
 
 ## Tech Stack
 
-| Layer         | Technology                                                    | Purpose                                 |
-| ------------- | ------------------------------------------------------------- | --------------------------------------- |
-| **Language**  | [Go 1.24](https://go.dev/doc/)                               | Latest performance & features           |
-| **Framework** | [Echo](https://echo.labstack.com/)                           | High-performance web framework          |
-| **Templates** | [Templ](https://templ.guide/)                                | Type-safe Go HTML components            |
-| **Logging**   | [slog](https://pkg.go.dev/log/slog)                          | Structured logging with JSON output     |
-| **Database**  | [SQLite](https://www.sqlite.org/)                            | Self-contained, serverless database     |
-| **Queries**   | [SQLC](https://sqlc.dev/)                                    | Generate type-safe Go from SQL          |
-| **DB Driver** | [modernc.org/sqlite](https://pkg.go.dev/modernc.org/sqlite)  | Pure Go, CGO-free SQLite driver        |
-| **Frontend**  | [HTMX](https://htmx.org/)                                    | Dynamic interactions without JavaScript |
-| **CSS**       | [Pico.css](https://picocss.com/)                             | Minimal, semantic CSS framework         |
-| **Assets**    | [Go Embed](https://pkg.go.dev/embed)                         | Single binary with embedded resources   |
-| **Config**    | Standard Library                                              | Environment-based configuration         |
-| **Build**     | [go generate](https://golang.org/pkg/go/)                    | Go native code generation               |
+| Layer         | Technology                                                  | Purpose                                 |
+| ------------- | ----------------------------------------------------------- | --------------------------------------- |
+| **Language**  | [Go 1.24](https://go.dev/doc/)                              | Latest performance & features           |
+| **Framework** | [Echo](https://echo.labstack.com/)                          | High-performance web framework          |
+| **Templates** | [Templ](https://templ.guide/)                               | Type-safe Go HTML components            |
+| **Logging**   | [slog](https://pkg.go.dev/log/slog)                         | Structured logging with JSON output     |
+| **Database**  | [SQLite](https://www.sqlite.org/)                           | Self-contained, serverless database     |
+| **Queries**   | [SQLC](https://sqlc.dev/)                                   | Generate type-safe Go from SQL          |
+| **DB Driver** | [modernc.org/sqlite](https://pkg.go.dev/modernc.org/sqlite) | Pure Go, CGO-free SQLite driver         |
+| **Frontend**  | [HTMX](https://htmx.org/)                                   | Dynamic interactions without JavaScript |
+| **CSS**       | [Pico.css](https://picocss.com/)                            | Minimal, semantic CSS framework         |
+| **Assets**    | [Go Embed](https://pkg.go.dev/embed)                        | Single binary with embedded resources   |
+| **Config**    | Standard Library                                            | Environment-based configuration         |
+| **Build**     | [go generate](https://golang.org/pkg/go/)                   | Go native code generation               |
 
 ## Quick Start
 
@@ -77,10 +77,6 @@ go run ./cmd/web
 
 Interactive web application showcasing Echo + Templ + HTMX + Pico.css + SQLC integration with user management, CRUD operations, and real-time updates.
 
-<p align="center">
-  <img src="docs/images/gopher-mage.svg" alt="Gopher Template" width="150" />
-</p>
-
 ## Development Commands
 
 **Core Commands:**
@@ -102,67 +98,13 @@ templ generate          # Generate templ templates
 sqlc generate           # Generate database queries
 ```
 
-## Architecture
-
-**Echo Framework:**
-
-```go
-e := echo.New()
-e.Use(middleware.Logger())
-e.Use(middleware.Recover())
-
-e.GET("/", homeHandler.Home)
-e.GET("/users", userHandler.Users)
-e.POST("/users", userHandler.CreateUser)
-```
-
-**Templ Components:**
-
-```go
-package view
-
-templ Home() {
-    @layout.Base("Home") {
-        <h1>Welcome to Go Web Server</h1>
-        <section>
-            <button hx-get="/users" hx-target="#user-list">
-                Load Users
-            </button>
-            <div id="user-list"></div>
-        </section>
-    }
-}
-```
-
-**HTMX Integration:**
-
-```html
-<form hx-post="/users" hx-target="#user-list" hx-swap="innerHTML">
-  <input type="text" name="name" placeholder="Full Name" required/>
-  <input type="email" name="email" placeholder="Email Address" required/>
-  <button type="submit">Add User</button>
-</form>
-```
-
-**SQLC Queries:**
-
-```sql
--- name: CreateUser :one
-INSERT INTO users (email, name) 
-VALUES (?, ?)
-RETURNING *;
-
--- name: ListUsers :many
-SELECT * FROM users ORDER BY created_at DESC;
-```
-
 ## Project Structure
 
-```
+```sh
 go-web-server/
 ├── cmd/web/              # Application entry point
 ├── internal/
-│   ├── handler/          # Echo HTTP handlers  
+│   ├── handler/          # Echo HTTP handlers
 │   ├── view/             # Templ templates (.templ files)
 │   ├── store/            # SQLC generated database code
 │   ├── db/               # SQL schema and queries
@@ -211,7 +153,7 @@ WantedBy=multi-user.target
 
 ### Reverse Proxy (Caddy)
 
-```
+```sh
 yourdomain.com {
     reverse_proxy localhost:8080
 }
@@ -237,15 +179,6 @@ yourdomain.com {
 - Hot reloading development
 - Type safety throughout
 - Modern Go practices
-
-## Contributing
-
-1. Fork and create feature branch
-2. Follow Modern Go Stack principles
-3. Use Go standard library when possible
-4. Maintain type safety with Templ and SQLC
-5. Run: `go fmt ./... && go vet ./... && go test ./...`
-6. Submit pull request
 
 <p align="center">
   <a href="https://buymeacoffee.com/dunamismax" target="_blank">
