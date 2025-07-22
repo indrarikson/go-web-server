@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="docs/images/go-logo.png" alt="Go Web Server Template Logo" width="400" />
+  <img src="https://github.com/dunamismax/images/blob/main/go-logo.png" alt="Go Web Server Template Logo" width="400" />
 </p>
 
 <p align="center">
@@ -56,7 +56,7 @@ A minimal, clean, reusable template for modern web and API development using the
 | **Build**     | [go generate](https://golang.org/pkg/go/)                   | Go native code generation               |
 
 <p align="center">
-  <img src="docs/images/gopher-mage.svg" alt="Gopher Mage" width="200" />
+  <img src="https://github.com/dunamismax/images/blob/main/gopher-mage.svg" alt="Gopher Mage" width="200" />
 </p>
 
 ## Quick Start
@@ -170,7 +170,7 @@ The binary includes embedded static assets, templates, and SQLite database for e
 
 <p align="center">
   <a href="https://buymeacoffee.com/dunamismax" target="_blank">
-    <img src="docs/images/buy-coffee-go.gif" alt="Buy Me A Coffee" style="height: 150px !important;" />
+    <img src="https://github.com/dunamismax/images/blob/main/buy-coffee-go.gif" alt="Buy Me A Coffee" style="height: 150px !important;" />
   </a>
 </p>
 
@@ -194,5 +194,5 @@ This project is licensed under the **MIT License** - see the [LICENSE](LICENSE) 
 </p>
 
 <p align="center">
-  <img src="docs/images/gopher-running-jumping.gif" alt="Gopher Running and Jumping" width="400" />
+  <img src="https://github.com/dunamismax/images/blob/main/gopher-running-jumping.gif" alt="Gopher Running and Jumping" width="400" />
 </p>
