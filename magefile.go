@@ -262,29 +262,82 @@ func Docker() error {
 	return sh.RunV("docker", "build", "-t", "go-web-server", ".")
 }
 
+// Help prints a help message with available commands
+func Help() {
+	fmt.Println(`
+✨ Go Web Server Magefile ✨
+
+Available commands:
+
+Development:
+  mage setup (s)        Install tools and dependencies
+  mage generate (g)     Generate sqlc and templ code
+  mage dev (d)          Start development server with hot reload
+  mage run (r)          Build and run server
+
+Build & Test:
+  mage build (b)        Build optimized server binary (default)
+  mage test (t)         Run all tests with coverage
+  mage testverbose (tv) Run tests with verbose output
+  mage coverage (co)    Generate HTML coverage report
+  mage clean (c)        Clean build artifacts and coverage files
+
+Quality & Production:
+  mage fmt (f)          Format and tidy Go code
+  mage vet (v)          Run go vet static analysis
+  mage vulncheck (vc)   Check for security vulnerabilities
+  mage staticcheck (sc) Run advanced static analysis
+  mage lint (l)         Run all linters (vet + staticcheck + vulncheck)
+  mage ci               Complete CI pipeline with build info
+  mage docker           Build a Docker image (optional)
+
+Other:
+  mage help (h)         Show this help message
+	`)
+}
+
 // showBuildInfo displays information about the built binary
 func showBuildInfo() error {
 	binaryPath := filepath.Join(buildDir, binaryName)
 	if runtime.GOOS == "windows" {
 		binaryPath += ".exe"
 	}
-	
+
 	if _, err := os.Stat(binaryPath); os.IsNotExist(err) {
 		return fmt.Errorf("binary not found: %s", binaryPath)
 	}
-	
+
 	fmt.Println("\n📦 Build Information:")
-	
+
 	// Show binary size
 	if info, err := os.Stat(binaryPath); err == nil {
 		size := info.Size()
 		fmt.Printf("   Binary size: %.2f MB\n", float64(size)/1024/1024)
 	}
-	
+
 	// Show Go version
 	if version, err := sh.Output("go", "version"); err == nil {
 		fmt.Printf("   Go version: %s\n", version)
 	}
-	
+
 	return nil
+}
+
+// Aliases for common commands
+var Aliases = map[string]interface{}{
+	"b":  Build,
+	"g":  Generate,
+	"t":  Test,
+	"tv": TestVerbose,
+	"co": Coverage,
+	"f":  Fmt,
+	"v":  Vet,
+	"vc": VulnCheck,
+	"sc": StaticCheck,
+	"r":  Run,
+	"d":  Dev,
+	"c":  Clean,
+	"s":  Setup,
+	"l":  Lint,
+	"h":  Help,
 }

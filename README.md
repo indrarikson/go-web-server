@@ -4,7 +4,7 @@
 
 <p align="center">
   <a href="https://github.com/dunamismax/go-web-server">
-    <img src="https://readme-typing-svg.demolab.com/?font=Fira+Code&size=24&pause=1000&color=00ADD8&center=true&vCenter=true&width=900&lines=Modern+Go+Web+Server+Template;Radical+Simplicity+%26+Performance;Echo+%2B+Templ+%2B+HTMX+%2B+Pico.css;SQLC+%2B+SQLite+%2B+Structured+Logging;Single+Binary+Deployment;Production+Ready+Template;Zero+External+Dependencies" alt="Typing SVG" />
+    <img src="https://readme-typing-svg.demolab.com/?font=Fira+Code&size=24&pause=1000&color=00ADD8&center=true&vCenter=true&width=900&lines=The+Modern+Go+Stack;Echo+%2B+Templ+%2B+HTMX+%2B+Pico.css;Type-Safe+SQL+with+SQLC;Structured+Logging+%26+Testing;Production-Ready+Template;Single+Binary+Deployment;Zero+External+Dependencies" alt="Typing SVG" />
   </a>
 </p>
 
@@ -26,20 +26,16 @@
 
 ## About
 
-A minimal, clean, reusable template for modern web and API development using the **Modern Go Stack** - a cohesive technology stack for building high-performance, maintainable applications with radical simplicity and stability. Creates single, self-contained binaries with no external dependencies.
+A production-ready template for modern web applications using **The Modern Go Stack** - a cohesive technology stack for building high-performance, maintainable applications. Creates single, self-contained binaries with zero external dependencies.
 
 **Key Features:**
 
-- **Echo Framework**: High-performance, minimalist web framework
-- **Templ**: Type-safe, component-based HTML templating in Go
-- **HTMX**: Dynamic frontend interactions without JavaScript frameworks
-- **Pico.css**: Minimal, semantic CSS with zero configuration
-- **SQLC**: Type-safe database queries generated from SQL
-- **SQLite (CGO-free)**: Pure Go database driver for single binaries
-- **slog**: Structured logging throughout the application
-- **golang-migrate**: Professional database migration system
-- **Comprehensive testing**: Example tests with coverage reporting
-- **Advanced middleware**: Security, logging, rate limiting, and error handling
+- **Echo + Templ + HTMX**: Modern web stack with type-safe templates and dynamic UX
+- **SQLC + SQLite**: Type-safe database operations with pure Go driver  
+- **Structured Logging**: Built-in slog with JSON output for production
+- **Comprehensive Testing**: 89% test coverage with testify integration
+- **Production Security**: Rate limiting, CORS, secure headers, graceful shutdown
+- **Developer Experience**: Hot reload, Mage automation, static analysis
 
 ## Tech Stack
 
@@ -58,7 +54,7 @@ A minimal, clean, reusable template for modern web and API development using the
 | **Config**    | Standard Library                                            | Environment-based configuration         |
 | **Migrations** | [golang-migrate](https://github.com/golang-migrate/migrate) | Database migration management           |
 | **Build**     | [Mage](https://magefile.org/)                               | Go-based build automation               |
-| **Testing**   | [testify](https://github.com/stretchr/testify)              | Enhanced testing with assertions        |
+| **Testing**   | [testify](https://github.com/stretchr/testify)              | Enhanced testing (89% coverage)         |
 
 <p align="center">
   <img src="https://github.com/dunamismax/images/blob/main/gopher-mage.svg" alt="Gopher Mage" width="200" />
@@ -81,41 +77,44 @@ mage run
 
 ## Mage Commands
 
+Run `mage help` to see all available commands and their aliases.
+
 **Development:**
 
 ```bash
-mage setup            # Install tools and dependencies (templ, sqlc, air, etc.)
-mage generate         # Generate sqlc and templ code
-mage dev              # Start development server with hot reload
-mage run              # Build and run server
+mage setup (s)        # Install tools and dependencies
+mage generate (g)     # Generate sqlc and templ code
+mage dev (d)          # Start development server with hot reload
+mage run (r)          # Build and run server
 ```
 
 **Build & Test:**
 
 ```bash
-mage build            # Build optimized server binary (default target)
-mage test             # Run all tests with coverage
-mage testverbose      # Run tests with verbose output
-mage coverage         # Generate HTML coverage report
-mage clean            # Clean build artifacts and coverage files
+mage build (b)        # Build optimized server binary (default target)
+mage test (t)         # Run all tests with coverage
+mage testverbose (tv) # Run tests with verbose output
+mage coverage (co)    # Generate HTML coverage report
+mage clean (c)        # Clean build artifacts and coverage files
 ```
 
 **Quality & Production:**
 
 ```bash
-mage fmt              # Format and tidy Go code (includes templ formatting)
-mage vet              # Run go vet static analysis
-mage vulncheck        # Check for security vulnerabilities
-mage staticcheck      # Run advanced static analysis
-mage lint             # Run all linters (vet + staticcheck + vulncheck)
+mage fmt (f)          # Format and tidy Go code
+mage vet (v)          # Run go vet static analysis
+mage vulncheck (vc)   # Check for security vulnerabilities
+mage staticcheck (sc) # Run advanced static analysis
+mage lint (l)         # Run all linters
 mage ci               # Complete CI pipeline with build info
+mage docker           # Build a Docker image
 ```
 
 ## Applications
 
 ### Web Demo (`localhost:8080`)
 
-Interactive web application showcasing Echo + Templ + HTMX + Pico.css + SQLC integration with user management, CRUD operations, and real-time updates.
+Interactive user management application demonstrating the full Modern Go Stack with CRUD operations, real-time updates, and responsive design.
 
 ## Project Structure
 
@@ -125,14 +124,13 @@ go-web-server/
 ├── .github/workflows/    # CI/CD pipeline
 ├── cmd/web/              # Application entry point
 ├── internal/
-│   ├── handler/          # HTTP handlers & centralized routes + tests
+│   ├── handler/          # HTTP handlers & routes + tests  
 │   ├── view/             # Templ templates (.templ files)
-│   ├── store/            # Database layer (SQL + generated code) + tests
+│   ├── store/            # Database layer (SQLC generated) + tests
 │   │   └── migrations/   # Database migrations (golang-migrate)
-│   ├── config/           # Configuration management
+│   ├── config/           # Configuration management + tests
+│   ├── testutil/         # Testing utilities + tests
 │   └── ui/               # Static assets (embedded)
-│       ├── static/       # Pico.css & HTMX
-│       └── embed.go      # Go embed directive
 ├── bin/                  # Compiled binaries
 ├── magefile.go          # Mage build automation
 ├── sqlc.yaml            # SQLC configuration
@@ -163,32 +161,24 @@ The binary includes embedded Pico.css, HTMX, Templ templates, and SQLite databas
 
 ## Key Features Demonstrated
 
-**Web Application:**
+**Modern Web Stack:**
+- Echo framework with comprehensive middleware  
+- Type-safe Templ templates with components
+- HTMX dynamic interactions without JavaScript
+- Pico.css semantic styling with themes
+- SQLC type-safe database queries
+- Structured logging with slog
 
-- Echo framework with comprehensive middleware stack
-- Type-safe Templ templates with component architecture
-- HTMX dynamic interactions with theme switching
-- Pico.css semantic styling with dark/light mode
-- SQLC type-safe queries with context support
-- golang-migrate database migrations
-- Embedded static assets (Pico.css, HTMX)
-- Structured logging with slog throughout
-- Comprehensive health check endpoint
-
-**Development Experience:**
-
-- Hot reloading with Air configuration
-- Complete test suite with coverage reporting
-- Advanced static analysis (staticcheck, go vet, govulncheck)
-- Automated formatting for Go and Templ files
-- Single-command CI pipeline (mage ci)
-- Cross-platform build support
+**Developer Experience:**
+- Hot reloading with Air
+- 89% test coverage with testify
+- Static analysis (staticcheck, govulncheck)
+- Mage build automation
+- Single-command CI pipeline
 
 **Production Ready:**
-
-- Security middleware (CORS, rate limiting, secure headers)
-- Graceful shutdown handling
-- Request ID tracing and structured logging
+- Security middleware & rate limiting
+- Graceful shutdown & request tracing  
 - Environment-based configuration
 - Single binary deployment (~10MB)
 - Zero external dependencies
@@ -215,7 +205,7 @@ This project is licensed under the **MIT License** - see the [LICENSE](LICENSE) 
 
 <p align="center">
   <strong>The Modern Go Stack</strong><br>
-  <sub>Echo • Templ • HTMX • Pico.css • SQLC • SQLite • slog • Single Binary</sub>
+  <sub>Echo • Templ • HTMX • Pico.css • SQLC • SQLite • slog</sub>
 </p>
 
 <p align="center">
