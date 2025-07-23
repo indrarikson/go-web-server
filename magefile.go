@@ -71,24 +71,7 @@ func generateTempl() error {
 	return sh.RunV("templ", "generate")
 }
 
-// Test runs all tests with coverage
-func Test() error {
-	fmt.Println("🧪 Running tests...")
-	return sh.RunV("go", "test", "-race", "-coverprofile=coverage.out", "-covermode=atomic", "./...")
-}
 
-// TestVerbose runs tests with verbose output
-func TestVerbose() error {
-	fmt.Println("🧪 Running tests (verbose)...")
-	return sh.RunV("go", "test", "-race", "-v", "-coverprofile=coverage.out", "-covermode=atomic", "./...")
-}
-
-// Coverage shows test coverage report
-func Coverage() error {
-	mg.Deps(Test)
-	fmt.Println("📈 Generating coverage report...")
-	return sh.RunV("go", "tool", "cover", "-html=coverage.out", "-o", "coverage.html")
-}
 
 // Fmt formats and tidies code
 func Fmt() error {
@@ -229,7 +212,7 @@ func Setup() error {
 	fmt.Println("✅ Setup complete!")
 	fmt.Println("💡 Next steps:")
 	fmt.Println("   • Run 'mage dev' to start development with hot reload")
-	fmt.Println("   • Run 'mage test' to run tests")
+	
 	fmt.Println("   • Run 'mage build' to create production binary")
 	
 	return nil
@@ -242,19 +225,7 @@ func Lint() error {
 	return nil
 }
 
-// CI runs all checks suitable for continuous integration
-func CI() error {
-	fmt.Println("🏗️  Running CI pipeline...")
-	mg.SerialDeps(Generate, Fmt, Lint, Test, Build)
-	
-	// Show build info
-	if err := showBuildInfo(); err != nil {
-		fmt.Printf("Warning: failed to show build info: %v\n", err)
-	}
-	
-	fmt.Println("✅ CI pipeline completed successfully!")
-	return nil
-}
+
 
 // Docker builds a Docker image (optional)
 func Docker() error {
@@ -275,12 +246,7 @@ Development:
   mage dev (d)          Start development server with hot reload
   mage run (r)          Build and run server
 
-Build & Test:
-  mage build (b)        Build optimized server binary (default)
-  mage test (t)         Run all tests with coverage
-  mage testverbose (tv) Run tests with verbose output
-  mage coverage (co)    Generate HTML coverage report
-  mage clean (c)        Clean build artifacts and coverage files
+
 
 Quality & Production:
   mage fmt (f)          Format and tidy Go code
@@ -327,9 +293,7 @@ func showBuildInfo() error {
 var Aliases = map[string]interface{}{
 	"b":  Build,
 	"g":  Generate,
-	"t":  Test,
-	"tv": TestVerbose,
-	"co": Coverage,
+	
 	"f":  Fmt,
 	"v":  Vet,
 	"vc": VulnCheck,

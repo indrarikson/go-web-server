@@ -9,7 +9,7 @@
 </p>
 
 <p align="center">
-  <a href="https://github.com/dunamismax/go-web-server/actions/workflows/ci.yml"><img src="https://github.com/dunamismax/go-web-server/workflows/CI%20Pipeline/badge.svg" alt="CI Status"></a>
+  
   <a href="https://golang.org/"><img src="https://img.shields.io/badge/Go-1.24+-00ADD8.svg?logo=go" alt="Go Version"></a>
   <a href="https://echo.labstack.com/"><img src="https://img.shields.io/badge/Framework-Echo-00ADD8.svg?logo=go" alt="Echo Framework"></a>
   <a href="https://templ.guide/"><img src="https://img.shields.io/badge/Templates-Templ-00ADD8.svg?logo=go" alt="Templ"></a>
@@ -33,7 +33,7 @@ A production-ready template for modern web applications using **The Modern Go St
 - **Echo + Templ + HTMX**: Modern web stack with type-safe templates and dynamic UX
 - **SQLC + SQLite**: Type-safe database operations with pure Go driver  
 - **Structured Logging**: Built-in slog with JSON output for production
-- **Comprehensive Testing**: 89% test coverage with testify integration
+
 - **Production Security**: Rate limiting, CORS, secure headers, graceful shutdown
 - **Developer Experience**: Hot reload, Mage automation, static analysis
 
@@ -54,7 +54,7 @@ A production-ready template for modern web applications using **The Modern Go St
 | **Config**    | Standard Library                                            | Environment-based configuration         |
 | **Migrations** | [golang-migrate](https://github.com/golang-migrate/migrate) | Database migration management           |
 | **Build**     | [Mage](https://magefile.org/)                               | Go-based build automation               |
-| **Testing**   | [testify](https://github.com/stretchr/testify)              | Enhanced testing (89% coverage)         |
+
 
 <p align="center">
   <img src="https://github.com/dunamismax/images/blob/main/gopher-mage.svg" alt="Gopher Mage" width="200" />
@@ -88,15 +88,7 @@ mage dev (d)          # Start development server with hot reload
 mage run (r)          # Build and run server
 ```
 
-**Build & Test:**
 
-```bash
-mage build (b)        # Build optimized server binary (default target)
-mage test (t)         # Run all tests with coverage
-mage testverbose (tv) # Run tests with verbose output
-mage coverage (co)    # Generate HTML coverage report
-mage clean (c)        # Clean build artifacts and coverage files
-```
 
 **Quality & Production:**
 
@@ -124,17 +116,12 @@ go-web-server/
 ├── .github/workflows/    # CI/CD pipeline
 ├── cmd/web/              # Application entry point
 ├── internal/
-│   ├── handler/          # HTTP handlers & routes + tests  
-│   ├── view/             # Templ templates (.templ files)
-│   ├── store/            # Database layer (SQLC generated) + tests
-│   │   └── migrations/   # Database migrations (golang-migrate)
-│   ├── config/           # Configuration management + tests
-│   ├── testutil/         # Testing utilities + tests
+
 │   └── ui/               # Static assets (embedded)
 ├── bin/                  # Compiled binaries
 ├── magefile.go          # Mage build automation
 ├── sqlc.yaml            # SQLC configuration
-└── coverage.out/html     # Test coverage reports
+
 ```
 
 ## Production Deployment
@@ -171,7 +158,7 @@ The binary includes embedded Pico.css, HTMX, Templ templates, and SQLite databas
 
 **Developer Experience:**
 - Hot reloading with Air
-- 89% test coverage with testify
+
 - Static analysis (staticcheck, govulncheck)
 - Mage build automation
 - Single-command CI pipeline
